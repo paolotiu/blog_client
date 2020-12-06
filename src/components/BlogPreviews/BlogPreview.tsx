@@ -5,6 +5,7 @@ import TimeAgo from 'javascript-time-ago';
 
 // English.
 import en from 'javascript-time-ago/locale/en';
+import { Link } from 'react-router-dom';
 
 TimeAgo.addLocale(en);
 // Create formatter (English).
@@ -12,11 +13,13 @@ const timeAgo = new TimeAgo('en-US');
 
 const padding = '15px';
 const StyledBlogPreview = styled.div`
+    color: black;
     cursor: pointer;
     box-shadow: 1px 1px 4px black;
     padding: ${padding};
     border-radius: 4px;
     position: relative;
+    height: 100%;
 `;
 
 const StyledHeader = styled.h1`
@@ -49,13 +52,22 @@ export const BlogPreview: React.FC<Props> = (props) => {
     const { blog } = props;
 
     return (
-        <StyledBlogPreview>
-            <StyledHeader>{blog.title}</StyledHeader>
-            <StyledPreview>{blog.text}</StyledPreview>
-            <StyledInfo>
-                <p>{blog.author.username}</p>
-                <p>{timeAgo.format(new Date(blog.timestamp))}</p>
-            </StyledInfo>
-        </StyledBlogPreview>
+        <Link
+            to={'/blogs/' + blog._id}
+            style={{
+                textDecoration: 'none',
+                width: '100%',
+                height: '100%',
+            }}
+        >
+            <StyledBlogPreview>
+                <StyledHeader>{blog.title}</StyledHeader>
+                <StyledPreview>{blog.text}</StyledPreview>
+                <StyledInfo>
+                    <p>{blog.author.username}</p>
+                    <p>{timeAgo.format(new Date(blog.timestamp))}</p>
+                </StyledInfo>
+            </StyledBlogPreview>
+        </Link>
     );
 };
