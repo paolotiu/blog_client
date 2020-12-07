@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Blog } from './types';
-import { BlogPreviewsContainer, Header } from './components/index';
+import { IBlog } from './types';
+import {
+    BlogPreviewsContainer,
+    Header,
+    Spinner,
+    Blog,
+} from './components/index';
 import { fetchAllBlogs } from './functions/api';
 import {
     BrowserRouter as Router,
@@ -8,9 +13,12 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom';
-
+import { ThemeProvider } from 'styled-components';
+const theme = {
+    info: '#b8b8b8',
+};
 function App() {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<IBlog[] | null>();
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogs = await fetchAllBlogs();
@@ -19,18 +27,25 @@ function App() {
         fetchBlogs();
     }, []);
 
-    console.log(blogs);
     return (
         <Router>
             <Header />
-
             <Switch>
                 <Route path="/" exact>
                     <Redirect to="/blogs" />
                 </Route>
-                <Route path="/blogs">
-                    <BlogPreviewsContainer blogs={blogs} />
-                </Route>
+                <ThemeProvider theme={theme}>
+                    <Route path="/blogs" exact>
+                        {blogs ? (
+                            <BlogPreviewsContainer blogs={blogs} />
+                        ) : (
+                            <Spinner />
+                        )}
+                    </Route>
+                    <Route path="/blogs/:id">
+                        <Blog />
+                    </Route>
+                </ThemeProvider>
             </Switch>
         </Router>
     );
