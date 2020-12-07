@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Blog } from '../../types';
+import { IBlog } from '../../types';
 import { BlogPreview } from './BlogPreview';
 
 interface Props {
-    blogs: Blog[];
+    blogs: IBlog[];
 }
 const StyledContainer = styled.section`
     box-sizing: border-box;
