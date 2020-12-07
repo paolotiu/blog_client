@@ -1,16 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Blog } from '../../types';
-import TimeAgo from 'javascript-time-ago';
-
-// English.
-import en from 'javascript-time-ago/locale/en';
+import { IBlog } from '../../types';
 import { Link } from 'react-router-dom';
-
-TimeAgo.addLocale(en);
-// Create formatter (English).
-const timeAgo = new TimeAgo('en-US');
-
+import { formatDate } from '../../functions/customHooks';
 const padding = '15px';
 const StyledBlogPreview = styled.div`
     color: black;
@@ -40,12 +32,12 @@ const StyledInfo = styled.div`
     position: absolute;
     left: 0;
     bottom: 0;
-    color: #6e6e6e;
+    color: ${(props) => props.theme.info};
     width: 100%;
     padding: ${padding};
 `;
 interface Props {
-    blog: Blog;
+    blog: IBlog;
 }
 
 export const BlogPreview: React.FC<Props> = (props) => {
@@ -65,7 +57,7 @@ export const BlogPreview: React.FC<Props> = (props) => {
                 <StyledPreview>{blog.text}</StyledPreview>
                 <StyledInfo>
                     <p>{blog.author.username}</p>
-                    <p>{timeAgo.format(new Date(blog.timestamp))}</p>
+                    <p>{formatDate(blog.timestamp)}</p>
                 </StyledInfo>
             </StyledBlogPreview>
         </Link>
