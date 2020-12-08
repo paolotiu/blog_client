@@ -123,7 +123,7 @@ export const CommentForm: React.FC<Props> = ({
             },
             '-=0.5'
         );
-    }, []);
+    }, [tl]);
 
     return (
         <StyledForm onSubmit={handleSubmit}>
