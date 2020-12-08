@@ -3,19 +3,32 @@ import React from 'react';
 import { IBlog } from '../../types';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../functions/customHooks';
+
+interface Props {
+    key: number;
+    blog: IBlog;
+}
+
 const padding = '15px';
 const StyledBlogPreview = styled.div`
-    color: black;
+    color: ${(props) => props.theme.paragraph};
+    background-color: ${(props) => props.theme.bg};
     cursor: pointer;
-    box-shadow: 1px 1px 4px black;
+    border: 2px solid white;
+    box-shadow: 10px 10px 10px rgba(182, 182, 182, 0.089);
     padding: ${padding};
     border-radius: 4px;
     position: relative;
     height: 100%;
+    transition: all 0.5s ease;
+    &:hover {
+        transform: scale(1.1);
+    }
 `;
 
 const StyledHeader = styled.h1`
     font-size: 1.7em;
+    color: ${(props) => props.theme.headline};
 `;
 
 const StyledPreview = styled.p`
