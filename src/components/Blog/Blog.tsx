@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { fetchBlogByID } from '../../functions/api';
 import { formatDate } from '../../functions/customHooks';
 import { useParams } from 'react-router-dom';
-import { IBlog } from '../../types';
+import { IBlog, IComment } from '../../types';
 import { Spinner } from '../Spinner/Spinner';
 import { CommentForm } from './CommentForm/CommentForm';
+import { Comment } from './Comment/Comment';
 import styled from 'styled-components';
 const Container = styled.section`
     padding: 1em;
@@ -32,11 +33,13 @@ const Info = styled.div`
 export const Blog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [blog, setBlog] = useState<IBlog>();
+    const [comments, setComments] = useState<Array<IComment>>();
 
     useEffect(() => {
         const fetchBlog = async () => {
-            const blog = await fetchBlogByID(id);
+            const blog: IBlog = await fetchBlogByID(id);
             setBlog(blog);
+            setComments(blog.comments);
         };
         fetchBlog();
     }, [id]);
@@ -51,9 +54,9 @@ export const Blog: React.FC = () => {
                         <span>By: {blog.author.username}</span>
                         <span>{formatDate(blog.timestamp)}</span>
                     </Info>
-                    <CommentForm />
-                    {blog.comments.map((comment) => {
-                        return <p>{comment.author}</p>;
+                    <CommentForm setComments={setComments} />
+                    {comments?.map((comment, index) => {
+                        return <Comment comment={comment} key={index + 100} />;
                     })}
                 </Container>
             ) : (
