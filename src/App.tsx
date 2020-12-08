@@ -35,12 +35,13 @@ function App() {
 
     return (
         <Router>
-            <Header />
-            <Switch>
-                <Route path="/" exact>
-                    <Redirect to="/blogs" />
-                </Route>
-                <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
+                <Header />
+                <Switch>
+                    <Route path="/" exact>
+                        <Redirect to="/blogs" />
+                    </Route>
+
                     <Route path="/blogs" exact>
                         {blogs ? (
                             <BlogPreviewsContainer blogs={blogs} />
@@ -51,8 +52,8 @@ function App() {
                     <Route path="/blogs/:id">
                         <Blog />
                     </Route>
-                </ThemeProvider>
-            </Switch>
+                </Switch>
+            </ThemeProvider>
         </Router>
     );
 }
