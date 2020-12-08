@@ -1,10 +1,4 @@
-import React, {
-    ChangeEvent,
-    Dispatch,
-    SetStateAction,
-    useState,
-    useEffect,
-} from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { postComment } from '../../../functions/api';
 import styled from 'styled-components';
@@ -12,6 +6,7 @@ import { IComment } from '../../../types';
 import { TimelineLite } from 'gsap';
 interface Props {
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+    setMadeNewComment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const StyledForm = styled.form`
     display: grid;
@@ -58,7 +53,10 @@ const StyledInptContainer = styled.div`
     }
 `;
 
-export const CommentForm: React.FC<Props> = ({ setComments }) => {
+export const CommentForm: React.FC<Props> = ({
+    setComments,
+    setMadeNewComment,
+}) => {
     const { id } = useParams<{ id: string }>();
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
@@ -75,12 +73,24 @@ export const CommentForm: React.FC<Props> = ({ setComments }) => {
 
     function handleSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
+
+        const tl = new TimelineLite();
         if (!text || !author) {
             return;
         }
         postComment(id, author, text).then((json: IComment) => {
             if (json._id) {
-                const tl = new TimelineLite();
+                setTimeout(() => {
+                    setComments((comments) => {
+                        if (comments) {
+                            const temp = [...comments];
+                            temp.unshift(json);
+                            return temp;
+                        } else {
+                            return [json];
+                        }
+                    });
+                }, 0);
                 tl.to('.submit', {
                     x: -20,
                     duration: 1,
@@ -96,25 +106,14 @@ export const CommentForm: React.FC<Props> = ({ setComments }) => {
                 );
                 setTimeout(() => {
                     tl.reverse();
-                }, 2000);
-                setComments((comments) => {
-                    if (comments) {
-                        const temp = [...comments];
-                        temp.unshift(json);
-                        return temp;
-                    } else {
-                        return [json];
-                    }
-                });
+                    setMadeNewComment(true);
+                }, 1000);
             }
             setText('');
             setAuthor('');
         });
     }
 
-    useEffect(() => {
-        return () => {};
-    }, []);
     return (
         <StyledForm onSubmit={handleSubmit}>
             <h2 className="test">Leave a comment </h2>
