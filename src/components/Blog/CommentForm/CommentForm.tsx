@@ -1,4 +1,11 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { postComment } from '../../../functions/api';
 import styled from 'styled-components';
@@ -60,7 +67,7 @@ export const CommentForm: React.FC<Props> = ({
     const { id } = useParams<{ id: string }>();
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
-
+    const { current: tl } = useRef(new TimelineLite({ paused: true }));
     function handleChange(
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
@@ -74,45 +81,49 @@ export const CommentForm: React.FC<Props> = ({
     function handleSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        const tl = new TimelineLite();
         if (!text || !author) {
             return;
         }
         postComment(id, author, text).then((json: IComment) => {
             if (json._id) {
-                setTimeout(() => {
-                    setComments((comments) => {
-                        if (comments) {
-                            const temp = [...comments];
-                            temp.unshift(json);
-                            return temp;
-                        } else {
-                            return [json];
-                        }
-                    });
-                }, 0);
-                tl.to('.submit', {
-                    x: -20,
-                    duration: 1,
-                    ease: 'power2',
-                }).to(
-                    '.check',
-                    {
-                        opacity: 1,
-                        duration: 1,
-                        ease: 'power1',
-                    },
-                    '-=0.5'
-                );
+                tl.restart();
                 setTimeout(() => {
                     tl.reverse();
-                    setMadeNewComment(true);
                 }, 1000);
+                setTimeout(() => {
+                    setMadeNewComment(true);
+                }, 1500);
+
+                setComments((comments) => {
+                    if (comments) {
+                        const temp = [...comments];
+                        temp.unshift(json);
+                        return temp;
+                    } else {
+                        return [json];
+                    }
+                });
             }
             setText('');
             setAuthor('');
         });
     }
+
+    useEffect(() => {
+        tl.to('.submit', {
+            x: -20,
+            duration: 1,
+            ease: 'power2',
+        }).to(
+            '.check',
+            {
+                opacity: 1,
+                duration: 1,
+                ease: 'power1',
+            },
+            '-=0.5'
+        );
+    }, []);
 
     return (
         <StyledForm onSubmit={handleSubmit}>
