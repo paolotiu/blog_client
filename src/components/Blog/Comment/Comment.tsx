@@ -5,6 +5,7 @@ import { IComment } from '../../../types';
 
 interface Props {
     comment: IComment;
+    id: string;
 }
 
 const CommentContainer = styled.div`
@@ -21,9 +22,9 @@ const CommentContainer = styled.div`
     }
 `;
 
-export const Comment: React.FC<Props> = ({ comment }) => {
+export const Comment: React.FC<Props> = ({ comment, id }) => {
     return (
-        <CommentContainer>
+        <CommentContainer id={id}>
             <h2>{comment.author}</h2>
             <p>{comment.text}</p>
 
