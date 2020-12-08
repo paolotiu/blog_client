@@ -8,6 +8,19 @@ export const fetchBlogByID = async (id: string) => {
     return blog.json();
 };
 
+export const postComment = async (id: string, author: string, text: string) => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append('author', author);
+    urlencoded.append('text', text);
+    const res = await fetch(
+        'https://blog-api-pt.herokuapp.com/blogs/' + id + '/comment',
+        { method: 'POST', headers: headers, body: urlencoded }
+    );
+    return res.json();
+};
 // export const loginUser = async (
 //     username: string = 'aaa',
 //     password: string = 'password'
