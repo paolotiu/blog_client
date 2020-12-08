@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
     display: grid;
-    background-color: pink;
+    background-color: rgba(39, 35, 67, 0.301);
+    backdrop-filter: blur(40px);
     padding: 1em 2em;
     grid-template-columns: 1fr minmax(200px, 2fr);
     align-items: center;
@@ -67,14 +68,6 @@ const StyledSvg = styled.svg`
 `;
 
 export const Header: React.FC = () => {
-    useEffect(() => {
-        const paths: NodeListOf<SVGPathElement> = document.querySelectorAll(
-            '.path'
-        );
-        paths.forEach((path) => {
-            console.log(path.getTotalLength());
-        });
-    }, []);
     return (
         <StyledHeader>
             <Link
