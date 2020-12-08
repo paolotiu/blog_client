@@ -8,6 +8,7 @@ import { CommentForm } from './CommentForm/CommentForm';
 import { Comment } from './Comment/Comment';
 import styled from 'styled-components';
 const Container = styled.section`
+    background-color: white;
     padding: 1em;
     display: grid;
     max-width: 1000px;
@@ -34,6 +35,7 @@ export const Blog: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [blog, setBlog] = useState<IBlog>();
     const [comments, setComments] = useState<Array<IComment>>();
+    const [madeNewComment, setMadeNewComment] = useState(false);
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -43,7 +45,12 @@ export const Blog: React.FC = () => {
         };
         fetchBlog();
     }, [id]);
+    if (madeNewComment && comments) {
+        const newComment = document.getElementById(comments[0]._id);
 
+        newComment?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setMadeNewComment(false);
+    }
     return (
         <>
             {blog ? (
@@ -54,9 +61,18 @@ export const Blog: React.FC = () => {
                         <span>By: {blog.author.username}</span>
                         <span>{formatDate(blog.timestamp)}</span>
                     </Info>
-                    <CommentForm setComments={setComments} />
+                    <CommentForm
+                        setComments={setComments}
+                        setMadeNewComment={setMadeNewComment}
+                    />
                     {comments?.map((comment, index) => {
-                        return <Comment comment={comment} key={index + 100} />;
+                        return (
+                            <Comment
+                                comment={comment}
+                                key={comment._id}
+                                id={comment._id}
+                            />
+                        );
                     })}
                 </Container>
             ) : (
