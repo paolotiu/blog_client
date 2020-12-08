@@ -1,8 +1,18 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
+    useState,
+    useEffect,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import { postComment } from '../../../functions/api';
 import styled from 'styled-components';
-
+import { IComment } from '../../../types';
+import { TimelineLite } from 'gsap';
+interface Props {
+    setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+}
 const StyledForm = styled.form`
     display: grid;
     gap: 1em;
@@ -12,12 +22,33 @@ const StyledForm = styled.form`
     h2 {
         padding-bottom: 1em;
     }
+    button[type='submit'] {
+        position: relative;
+        background-color: ${(props) => props.theme.buttonbg};
+        color: ${(props) => props.theme.paragraph};
+        border: 1px solid ${(props) => props.theme.stroke};
+        border-radius: 1em;
+        padding: 0.2em;
+        span {
+            display: inline-block;
+        }
+    }
 `;
 
+const CheckIcon = styled.span`
+    position: absolute;
+    transform: translate(-10px, -1px);
+    color: #009c00;
+    opacity: 0;
+`;
 const StyledInptContainer = styled.div`
     display: grid;
     gap: 0.4em;
 
+    input,
+    textarea {
+        border: 1px solid ${(props) => props.theme.stroke};
+    }
     input[type='text'] {
         padding: 0.4em;
         max-width: 250px;
@@ -25,14 +56,9 @@ const StyledInptContainer = styled.div`
     textarea {
         resize: none;
     }
-
-    input,
-    textarea {
-        border: 1px solid ${(props) => props.theme.stroke};
-    }
 `;
 
-export const CommentForm: React.FC = ({}) => {
+export const CommentForm: React.FC<Props> = ({ setComments }) => {
     const { id } = useParams<{ id: string }>();
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
@@ -49,13 +75,49 @@ export const CommentForm: React.FC = ({}) => {
 
     function handleSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
-        postComment(id, author, text).then((json) => {
-            console.log(json);
+        if (!text || !author) {
+            return;
+        }
+        postComment(id, author, text).then((json: IComment) => {
+            if (json._id) {
+                const tl = new TimelineLite();
+                tl.to('.submit', {
+                    x: -20,
+                    duration: 1,
+                    ease: 'power2',
+                }).to(
+                    '.check',
+                    {
+                        opacity: 1,
+                        duration: 1,
+                        ease: 'power1',
+                    },
+                    '-=0.5'
+                );
+                setTimeout(() => {
+                    tl.reverse();
+                }, 2000);
+                setComments((comments) => {
+                    if (comments) {
+                        const temp = [...comments];
+                        temp.unshift(json);
+                        return temp;
+                    } else {
+                        return [json];
+                    }
+                });
+            }
+            setText('');
+            setAuthor('');
         });
     }
+
+    useEffect(() => {
+        return () => {};
+    }, []);
     return (
         <StyledForm onSubmit={handleSubmit}>
-            <h2>Leave a comment </h2>
+            <h2 className="test">Leave a comment </h2>
             <StyledInptContainer>
                 <label htmlFor="author">Name:</label>
                 <input
@@ -76,7 +138,10 @@ export const CommentForm: React.FC = ({}) => {
                     rows={10}
                 ></textarea>
             </StyledInptContainer>
-            <input type="submit" />
+            <button type="submit">
+                <span className="submit">Submit</span>{' '}
+                <CheckIcon className="check">✔</CheckIcon>
+            </button>
         </StyledForm>
     );
 };
