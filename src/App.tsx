@@ -19,7 +19,9 @@ const theme = {
     paragraph: '#2d334a',
     bg: '#fffffe',
     info: '#ffd803',
+    buttonbg: '#ffd803',
     stroke: '#272343',
+    boxShadow: '10px 10px 10px rgba(182, 182, 182, 0.089)',
 };
 function App() {
     const [blogs, setBlogs] = useState<IBlog[] | null>();
