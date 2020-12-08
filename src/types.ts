@@ -4,6 +4,11 @@ export interface IBlog {
     author: {
         username: string;
     };
+    comments: Array<{
+        author: string;
+        text: string;
+        timestamp: string;
+    }>;
     timestamp: string;
     _id: string;
 }
