@@ -15,7 +15,11 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 const theme = {
-    info: '#b8b8b8',
+    headline: '#272343',
+    paragraph: '#2d334a',
+    bg: '#fffffe',
+    info: '#ffd803',
+    stroke: '#272343',
 };
 function App() {
     const [blogs, setBlogs] = useState<IBlog[] | null>();
