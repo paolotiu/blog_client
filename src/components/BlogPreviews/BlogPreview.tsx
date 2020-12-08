@@ -12,9 +12,11 @@ interface Props {
 const padding = '15px';
 const StyledBlogPreview = styled.div`
     color: ${(props) => props.theme.paragraph};
-    background-color: ${(props) => props.theme.bg};
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(40px);
     cursor: pointer;
-    border: 2px solid white;
+    border: 2px solid transparent;
+    background-clip: padding-box;
     box-shadow: 10px 10px 10px rgba(182, 182, 182, 0.089);
     padding: ${padding};
     border-radius: 4px;
@@ -34,7 +36,7 @@ const StyledHeader = styled.h1`
 const StyledPreview = styled.p`
     max-height: 40%;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
