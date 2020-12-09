@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { postComment } from '../../../functions/api';
 import styled from 'styled-components';
 import { IComment } from '../../../types';
-import { TimelineLite } from 'gsap';
+import gsap from 'gsap';
 interface Props {
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
     setMadeNewComment: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,7 +67,7 @@ export const CommentForm: React.FC<Props> = ({
     const { id } = useParams<{ id: string }>();
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
-    const { current: tl } = useRef(new TimelineLite({ paused: true }));
+    const { current: tl } = useRef(gsap.timeline({ paused: true }));
     function handleChange(
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
