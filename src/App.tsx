@@ -5,6 +5,7 @@ import {
     Header,
     Spinner,
     Blog,
+    Login,
 } from './components/index';
 import { fetchAllBlogs } from './functions/api';
 import {
@@ -49,8 +50,11 @@ function App() {
                             <Spinner />
                         )}
                     </Route>
-                    <Route path="/blogs/:id">
+                    <Route path="/blogs/:id" exact>
                         <Blog />
+                    </Route>
+                    <Route path="/login" exact>
+                        <Login />
                     </Route>
                 </Switch>
             </ThemeProvider>

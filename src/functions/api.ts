@@ -25,24 +25,29 @@ export const postComment = async (id: string, author: string, text: string) => {
     );
     return res.json();
 };
-// export const loginUser = async (
-//     username: string = 'aaa',
-//     password: string = 'password'
-// ) => {
-//     const headers = new Headers();
-//     headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-//     const urlencoded = new URLSearchParams();
-//     urlencoded.append('username', 'aaa');
-//     urlencoded.append('password', 'password');
+export const loginUser = async (username: string, password: string) => {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-//     const requestOptions: RequestInit = {
-//         method: 'POST',
-//         headers: headers,
-//         body: urlencoded,
-//     };
+    const urlencoded = new URLSearchParams();
+    urlencoded.append('username', username);
+    urlencoded.append('password', password);
 
-//     const res = await fetch('http://localhost:3001/user/login', requestOptions);
-//     const json = await res.json();
-//     console.log(json);
-// };
+    const requestOptions: RequestInit = {
+        method: 'POST',
+        headers: headers,
+        body: urlencoded,
+    };
+
+    try {
+        const res = await fetch(
+            'http://localhost:3001/user/login',
+            requestOptions
+        );
+        const json = await res.json();
+        return json;
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

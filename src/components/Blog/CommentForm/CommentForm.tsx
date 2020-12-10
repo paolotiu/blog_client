@@ -15,7 +15,7 @@ interface Props {
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
     setMadeNewComment: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const StyledForm = styled.form`
+export const StyledCommentForm = styled.form`
     display: grid;
     gap: 1em;
     border: 2px solid ${(props) => props.theme.stroke};
@@ -37,13 +37,13 @@ const StyledForm = styled.form`
     }
 `;
 
-const CheckIcon = styled.span`
+export const CheckIcon = styled.span`
     position: absolute;
     transform: translate(-10px, -1px);
     color: #009c00;
     opacity: 0;
 `;
-const StyledInptContainer = styled.div`
+export const StyledInputContainer = styled.div`
     display: grid;
     gap: 0.4em;
 
@@ -126,9 +126,9 @@ export const CommentForm: React.FC<Props> = ({
     }, [tl]);
 
     return (
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledCommentForm onSubmit={handleSubmit}>
             <h2 className="test">Leave a comment </h2>
-            <StyledInptContainer>
+            <StyledInputContainer>
                 <label htmlFor="author">Name:</label>
                 <input
                     type="text"
@@ -136,8 +136,8 @@ export const CommentForm: React.FC<Props> = ({
                     value={author}
                     onChange={handleChange}
                 />
-            </StyledInptContainer>
-            <StyledInptContainer>
+            </StyledInputContainer>
+            <StyledInputContainer>
                 <label htmlFor="text">Comment:</label>
                 <textarea
                     name="text"
@@ -147,11 +147,11 @@ export const CommentForm: React.FC<Props> = ({
                     cols={30}
                     rows={10}
                 ></textarea>
-            </StyledInptContainer>
+            </StyledInputContainer>
             <button type="submit">
                 <span className="submit">Submit</span>{' '}
                 <CheckIcon className="check">✔</CheckIcon>
             </button>
-        </StyledForm>
+        </StyledCommentForm>
     );
 };

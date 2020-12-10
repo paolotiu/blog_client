@@ -119,6 +119,16 @@ export const Header: React.FC = () => {
                     />
                 </StyledSvg>
             </Link>
+            <Link
+                to="/login"
+                style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    justifySelf: 'end',
+                }}
+            >
+                Login
+            </Link>
         </StyledHeader>
     );
 };
