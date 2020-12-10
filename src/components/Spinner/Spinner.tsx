@@ -6,6 +6,12 @@ const StyledContainer = styled.div`
 
     position: relative;
     margin: 100px auto;
+    p {
+        position: absolute;
+        width: 250px;
+        top: 50px;
+        left: -90px;
+    }
 `;
 
 const DB1 = styled.div`
@@ -51,9 +57,12 @@ const DB2 = styled(DB1)`
 
 export const Spinner: React.FC = () => {
     return (
-        <StyledContainer>
-            <DB1 />
-            <DB2 />
-        </StyledContainer>
+        <>
+            <StyledContainer>
+                <DB1 />
+                <DB2 />
+                <p>This may take a few seconds</p>
+            </StyledContainer>
+        </>
     );
 };
