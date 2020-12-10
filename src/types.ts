@@ -15,3 +15,9 @@ export interface IComment {
     text: string;
     timestamp: string;
 }
+
+export interface IUser {
+    username: string;
+    email: string;
+    isLogged: boolean;
+}

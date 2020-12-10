@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IBlog } from './types';
+import { IBlog, IUser } from './types';
 import {
     BlogPreviewsContainer,
     Header,
@@ -14,6 +14,8 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom';
+import { UserContext } from './context/UserContext';
+
 import { ThemeProvider } from 'styled-components';
 const theme = {
     headline: '#272343',
@@ -24,8 +26,14 @@ const theme = {
     stroke: '#272343',
     boxShadow: '10px 10px 10px rgba(182, 182, 182, 0.089)',
 };
+
 function App() {
     const [blogs, setBlogs] = useState<IBlog[] | null>();
+    const [user, setUser] = useState<IUser>({
+        username: '',
+        email: '',
+        isLogged: false,
+    });
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogs = await fetchAllBlogs();
@@ -37,7 +45,9 @@ function App() {
     return (
         <Router>
             <ThemeProvider theme={theme}>
-                <Header />
+                <UserContext.Provider value={{ user }}>
+                    <Header />
+                </UserContext.Provider>
                 <Switch>
                     <Route path="/" exact>
                         <Redirect to="/blogs" />
@@ -54,7 +64,9 @@ function App() {
                         <Blog />
                     </Route>
                     <Route path="/login" exact>
-                        <Login />
+                        <UserContext.Provider value={{ user, setUser }}>
+                            <Login />
+                        </UserContext.Provider>
                     </Route>
                 </Switch>
             </ThemeProvider>

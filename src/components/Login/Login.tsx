@@ -1,10 +1,12 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { loginUser } from '../../functions/api';
+import { UserContext } from '../../context/UserContext';
 import {
     StyledCommentForm,
     StyledInputContainer,
 } from '../Blog/CommentForm/CommentForm';
+import { IUser } from '../../types';
 const StyledForm = styled(StyledCommentForm)`
     margin: 0 auto;
     margin-top: 4em;
@@ -40,6 +42,7 @@ export const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { setUser } = useContext(UserContext);
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         if (e.target.name === 'username') {
             setUsername(e.target.value);
@@ -57,15 +60,28 @@ export const Login: React.FC = () => {
             return;
         } else {
             loginUser(username, password)
-                .then((res) => {
-                    if (res.error) {
-                        setError(res.error);
-                    } else {
-                        localStorage.setItem('token', res.token);
-                        setUsername('');
-                        setPassword('');
+                .then(
+                    (res: {
+                        user: { username: string; email: string };
+                        token: string;
+                        error: string;
+                    }) => {
+                        if (res.error) {
+                            setError(res.error);
+                        } else {
+                            if (setUser) {
+                                console.log(res.user);
+                                setUser({
+                                    ...res.user,
+                                    isLogged: true,
+                                });
+                            }
+                            localStorage.setItem('token', res.token);
+                            setUsername('');
+                            setPassword('');
+                        }
                     }
-                })
+                )
                 .catch((err) => setError(err.message));
         }
     }

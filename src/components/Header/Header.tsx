@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
+import { Dropdown } from './Dropdown/Dropdown';
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
@@ -68,6 +70,7 @@ const StyledSvg = styled.svg`
 `;
 
 export const Header: React.FC = () => {
+    const { user } = useContext(UserContext);
     return (
         <StyledHeader>
             <Link
@@ -119,16 +122,21 @@ export const Header: React.FC = () => {
                     />
                 </StyledSvg>
             </Link>
-            <Link
-                to="/login"
-                style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    justifySelf: 'end',
-                }}
-            >
-                Login
-            </Link>
+
+            {user.isLogged ? (
+                <Dropdown username={user.username} />
+            ) : (
+                <Link
+                    to="/login"
+                    style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        justifySelf: 'end',
+                    }}
+                >
+                    Login
+                </Link>
+            )}
         </StyledHeader>
     );
 };
