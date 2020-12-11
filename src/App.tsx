@@ -58,7 +58,7 @@ function App() {
     return (
         <Router>
             <ThemeProvider theme={theme}>
-                <UserContext.Provider value={{ user }}>
+                <UserContext.Provider value={{ user, setUser }}>
                     <Header />
                 </UserContext.Provider>
                 <Switch>

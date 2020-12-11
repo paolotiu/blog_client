@@ -1,17 +1,7 @@
-import React, { ChangeEvent, useRef } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useContext, useRef } from 'react';
+import styled from 'styled-components';
+import { UserContext } from '../../../context/UserContext';
 
-function createCSS() {
-    let styles = '';
-    for (let i = 1; i <= 3; i++) {
-        styles += `
-        #option-${i}{
-            transform-origin: top center
-            animation: scaleZ 300ms ${i * 60}ms ease-in-out forwards
-        }
-        `;
-    }
-}
 const StyledDropwdown = styled.div`
     justify-self: end;
     position: relative;
@@ -94,7 +84,7 @@ interface Props {
 
 export const Dropdown: React.FC<Props> = ({ username }) => {
     const options = useRef<HTMLDivElement>(null);
-
+    const { setUser } = useContext(UserContext);
     function toggleDropdown(
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) {
@@ -112,13 +102,26 @@ export const Dropdown: React.FC<Props> = ({ username }) => {
             }
         }
     }
+
+    function logOut() {
+        localStorage.removeItem('token');
+        if (setUser) {
+            setUser({
+                username: '',
+                email: '',
+                isLogged: false,
+            });
+        }
+    }
     return (
         <StyledDropwdown>
             <button onClick={toggleDropdown}>{username}</button>
             <div className="options" ref={options}>
                 <ul>
                     <li id="option-1">Your Blogs</li>
-                    <li id="option-2">Log Out</li>
+                    <li id="option-2" onClick={logOut}>
+                        Log Out
+                    </li>
                 </ul>
             </div>
         </StyledDropwdown>
