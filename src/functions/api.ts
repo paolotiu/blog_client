@@ -66,3 +66,20 @@ export const getUser = async () => {
 
     return json;
 };
+
+export const getOwnBlogs = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return { error: 'No token' };
+    }
+
+    const res = await fetch('http://localhost:3001/user/blogs', {
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
+    });
+
+    const json = await res.json();
+
+    return json;
+};
