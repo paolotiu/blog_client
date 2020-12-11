@@ -51,3 +51,18 @@ export const loginUser = async (username: string, password: string) => {
         return Promise.reject(err);
     }
 };
+
+export const getUser = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return { error: 'No token' };
+    }
+    const res = await fetch('http://localhost:3001/user', {
+        headers: {
+            Authorization: 'Bearer ' + token,
+        },
+    });
+    const json = await res.json();
+
+    return json;
+};
