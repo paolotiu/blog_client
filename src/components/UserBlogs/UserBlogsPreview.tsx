@@ -25,7 +25,13 @@ export const UserBlogsPreview: React.FC = () => {
             <StyledHeader style={{ textAlign: 'center' }}>
                 Your Blogs
             </StyledHeader>
-            {blogs ? <BlogPreviewsContainer blogs={blogs} /> : <Spinner />}
+            {blogs ? (
+                <>
+                    <BlogPreviewsContainer blogs={blogs} editing={true} />
+                </>
+            ) : (
+                <Spinner />
+            )}
         </>
     );
 };
