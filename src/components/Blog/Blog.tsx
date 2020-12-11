@@ -56,7 +56,7 @@ export const Blog: React.FC = () => {
             {blog ? (
                 <Container>
                     <Title>{blog.title}</Title>
-                    <Text>{blog.text}</Text>
+                    <Text>{getText(blog.text)}</Text>
                     <Info>
                         <span>By: {blog.author.username}</span>
                         <span>{formatDate(blog.timestamp)}</span>
@@ -80,4 +80,10 @@ export const Blog: React.FC = () => {
             )}
         </>
     );
+
+    function getText(html: string) {
+        var divContainer = document.createElement('div');
+        divContainer.innerHTML = html;
+        return divContainer.textContent || divContainer.innerText || '';
+    }
 };

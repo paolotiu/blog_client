@@ -7,6 +7,7 @@ import {
     Blog,
     Login,
     UserBlogsPreview,
+    EditBlog,
 } from './components/index';
 import { fetchAllBlogs, getUser } from './functions/api';
 import {
@@ -14,6 +15,7 @@ import {
     Switch,
     Route,
     Redirect,
+    useParams,
 } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 
@@ -35,6 +37,7 @@ function App() {
         email: '',
         isLogged: false,
     });
+
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogs = await fetchAllBlogs();
@@ -69,7 +72,10 @@ function App() {
 
                     <Route path="/blogs" exact>
                         {blogs ? (
-                            <BlogPreviewsContainer blogs={blogs} />
+                            <BlogPreviewsContainer
+                                blogs={blogs}
+                                setBlogs={setBlogs}
+                            />
                         ) : (
                             <Spinner />
                         )}
@@ -84,6 +90,9 @@ function App() {
                     </Route>
                     <Route path="/myblogs" exact>
                         <UserBlogsPreview />
+                    </Route>
+                    <Route path="/edit/:id" exact>
+                        <EditBlog user={user} blogs={blogs} />
                     </Route>
                 </Switch>
             </ThemeProvider>
