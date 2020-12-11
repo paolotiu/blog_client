@@ -39,6 +39,7 @@ const StyledDropwdown = styled.div`
             white-space: nowrap;
 
             li {
+                cursor: pointer;
                 padding: 1em;
                 border-top: 2px solid ${(props) => props.theme.headline};
                 border-left: 2px solid ${(props) => props.theme.headline};
@@ -90,8 +91,6 @@ const StyledDropwdown = styled.div`
 interface Props {
     username: string;
 }
-
-interface RefObject extends HTMLDivElement {}
 
 export const Dropdown: React.FC<Props> = ({ username }) => {
     const options = useRef<HTMLDivElement>(null);
