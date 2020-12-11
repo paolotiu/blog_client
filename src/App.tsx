@@ -6,6 +6,7 @@ import {
     Spinner,
     Blog,
     Login,
+    UserBlogsPreview,
 } from './components/index';
 import { fetchAllBlogs, getUser } from './functions/api';
 import {
@@ -80,6 +81,9 @@ function App() {
                         <UserContext.Provider value={{ user, setUser }}>
                             <Login />
                         </UserContext.Provider>
+                    </Route>
+                    <Route path="/myblogs" exact>
+                        <UserBlogsPreview />
                     </Route>
                 </Switch>
             </ThemeProvider>

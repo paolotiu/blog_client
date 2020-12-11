@@ -5,6 +5,7 @@ import { BlogPreview } from './BlogPreview';
 
 interface Props {
     blogs: IBlog[];
+    editing?: boolean;
 }
 const StyledBG = styled.div`
     position: fixed;
@@ -25,11 +26,20 @@ const StyledContainer = styled.section`
     padding: 50px clamp(50px, 1vw, 200px);
 `;
 
-export const BlogPreviewsContainer: React.FC<Props> = ({ blogs }) => {
+export const BlogPreviewsContainer: React.FC<Props> = ({ blogs, editing }) => {
     return (
         <>
             <StyledContainer>
                 {blogs.map((blog, index) => {
+                    if (editing) {
+                        return (
+                            <BlogPreview
+                                key={index}
+                                blog={blog}
+                                editing={editing}
+                            />
+                        );
+                    }
                     return <BlogPreview key={index} blog={blog} />;
                 })}
             </StyledContainer>

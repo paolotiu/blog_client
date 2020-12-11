@@ -7,6 +7,7 @@ import { formatDate } from '../../functions/customHooks';
 interface Props {
     key: number;
     blog: IBlog;
+    editing?: boolean;
 }
 
 const padding = '15px';

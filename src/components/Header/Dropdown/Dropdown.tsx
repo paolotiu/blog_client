@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../../../context/UserContext';
-
+import { Link } from 'react-router-dom';
 const StyledDropwdown = styled.div`
     justify-self: end;
     position: relative;
@@ -13,6 +13,7 @@ const StyledDropwdown = styled.div`
         outline: none;
         border: 2px solid ${(props) => props.theme.headline};
         color: inherit;
+        cursor: pointer;
     }
 
     .options {
@@ -86,7 +87,9 @@ export const Dropdown: React.FC<Props> = ({ username }) => {
     const options = useRef<HTMLDivElement>(null);
     const { setUser } = useContext(UserContext);
     function toggleDropdown(
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+        e:
+            | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            | React.MouseEvent<HTMLLIElement, MouseEvent>
     ) {
         e.preventDefault();
         const dd = options.current;
@@ -118,7 +121,9 @@ export const Dropdown: React.FC<Props> = ({ username }) => {
             <button onClick={toggleDropdown}>{username}</button>
             <div className="options" ref={options}>
                 <ul>
-                    <li id="option-1">Your Blogs</li>
+                    <li id="option-1" onClick={toggleDropdown}>
+                        <Link to="/myblogs">Your Blogs</Link>
+                    </li>
                     <li id="option-2" onClick={logOut}>
                         Log Out
                     </li>
