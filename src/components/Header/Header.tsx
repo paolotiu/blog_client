@@ -5,7 +5,7 @@ import { Dropdown } from './Dropdown/Dropdown';
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
-    z-index: 1;
+    z-index: 5;
     display: grid;
     background-color: rgba(39, 35, 67, 0.301);
     backdrop-filter: blur(40px);
