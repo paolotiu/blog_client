@@ -7,7 +7,7 @@ import {
     Blog,
     Login,
 } from './components/index';
-import { fetchAllBlogs } from './functions/api';
+import { fetchAllBlogs, getUser } from './functions/api';
 import {
     BrowserRouter as Router,
     Switch,
@@ -40,6 +40,19 @@ function App() {
             setBlogs(blogs);
         };
         fetchBlogs();
+        getUser().then(
+            (res: { username: string; email: string; error?: string }) => {
+                if (res.error) {
+                    return null;
+                }
+
+                setUser({
+                    username: res.username,
+                    email: res.email,
+                    isLogged: true,
+                });
+            }
+        );
     }, []);
 
     return (
