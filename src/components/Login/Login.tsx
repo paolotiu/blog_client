@@ -6,7 +6,6 @@ import {
     StyledCommentForm,
     StyledInputContainer,
 } from '../Blog/CommentForm/CommentForm';
-import { IUser } from '../../types';
 const StyledForm = styled(StyledCommentForm)`
     margin: 0 auto;
     margin-top: 4em;
