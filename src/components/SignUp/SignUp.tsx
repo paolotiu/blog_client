@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
-import { loginUser } from '../../functions/api';
-import { UserContext } from '../../context/UserContext';
+import { signUpUser } from '../../functions/api';
+
 import {
     StyledCommentForm,
     StyledInputContainer,
 } from '../Blog/CommentForm/CommentForm';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 const StyledForm = styled(StyledCommentForm)`
     margin: 0 auto;
     margin-top: 4em;
@@ -51,21 +51,20 @@ const StyledMessage = styled.p`
         }
     }
 `;
-export const Login: React.FC = () => {
-    let { name } = useParams<{ name: string }>();
-    if (!name) {
-        name = '';
-    }
-    const [username, setUsername] = useState(name);
+export const SignUp: React.FC = () => {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [error, setError] = useState('');
-    const { setUser } = useContext(UserContext);
+
     const history = useHistory();
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         if (e.target.name === 'username') {
             setUsername(e.target.value);
         } else if (e.target.name === 'password') {
             setPassword(e.target.value);
+        } else if (e.target.name === 'email') {
+            setEmail(e.target.value);
         }
     }
 
@@ -73,33 +72,24 @@ export const Login: React.FC = () => {
         e.preventDefault();
         setError('');
 
-        if (!username || !password) {
-            setError('You must input a username and password');
+        if (!username || !password || !email) {
+            setError('You must input an email, username, and password');
             return;
         } else {
             //FE Validation Pased
-            loginUser(username, password)
+            signUpUser(email, username, password)
                 .then(
                     (res: {
                         user: { username: string; email: string };
-                        token: string;
+
                         error: string;
                     }) => {
                         if (res.error) {
                             setError(res.error);
                         } else {
-                            //Success
-                            if (setUser) {
-                                setUser({
-                                    ...res.user,
-                                    isLogged: true,
-                                });
-                            }
-
-                            localStorage.setItem('token', res.token);
                             setUsername('');
                             setPassword('');
-                            history.push('/blogs');
+                            history.push('/login/' + username);
                         }
                     }
                 )
@@ -109,6 +99,15 @@ export const Login: React.FC = () => {
     return (
         <>
             <StyledForm onSubmit={handleSubmit}>
+                <StyledLoginInput>
+                    <label htmlFor="username">Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleChange}
+                    />
+                </StyledLoginInput>
                 <StyledLoginInput>
                     <label htmlFor="username">Username:</label>
                     <input
@@ -139,8 +138,7 @@ export const Login: React.FC = () => {
                 </button>
             </StyledForm>
             <StyledMessage>
-                Don't have an account? &nbsp;{' '}
-                <Link to="/signup"> Sign Up </Link>
+                Already have an account? &nbsp; <Link to="/login"> Login </Link>
             </StyledMessage>
         </>
     );

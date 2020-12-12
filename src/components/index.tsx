@@ -6,6 +6,7 @@ import { Login } from './Login/Login';
 import { UserBlogsPreview } from './UserBlogs/UserBlogsPreview';
 import { EditBlog } from './EditBlog/EditBlog';
 import { CreateBlog } from './CreateBlog/CreateBlog';
+import { SignUp } from './SignUp/SignUp';
 export {
     UserBlogsPreview,
     BlogPreviewsContainer,
@@ -15,4 +16,5 @@ export {
     Login,
     EditBlog,
     CreateBlog,
+    SignUp,
 };

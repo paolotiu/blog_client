@@ -25,25 +25,42 @@ const StyledContainer = styled.section`
 interface Props {
     editing?: boolean;
     setBlogs?: React.Dispatch<React.SetStateAction<IBlog[] | null | undefined>>;
+    ownBlogs?: IBlog[];
 }
 
-export const BlogPreviewsContainer: React.FC<Props> = ({ editing }) => {
+export const BlogPreviewsContainer: React.FC<Props> = ({
+    editing,
+    ownBlogs,
+}) => {
     const { blogs } = useContext(BlogContext);
     return (
         <>
             <StyledContainer>
-                {blogs?.map((blog, index) => {
-                    if (editing) {
-                        return (
-                            <BlogPreview
-                                key={index}
-                                blog={blog}
-                                editing={editing}
-                            />
-                        );
-                    }
-                    return <BlogPreview key={index} blog={blog} />;
-                })}
+                {editing
+                    ? ownBlogs?.map((blog, index) => {
+                          if (editing) {
+                              return (
+                                  <BlogPreview
+                                      key={index}
+                                      blog={blog}
+                                      editing={editing}
+                                  />
+                              );
+                          }
+                          return <BlogPreview key={index} blog={blog} />;
+                      })
+                    : blogs?.map((blog, index) => {
+                          if (editing) {
+                              return (
+                                  <BlogPreview
+                                      key={index}
+                                      blog={blog}
+                                      editing={editing}
+                                  />
+                              );
+                          }
+                          return <BlogPreview key={index} blog={blog} />;
+                      })}
             </StyledContainer>
             <StyledBG />
         </>

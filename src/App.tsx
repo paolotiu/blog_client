@@ -9,6 +9,7 @@ import {
     UserBlogsPreview,
     EditBlog,
     CreateBlog,
+    SignUp,
 } from './components/index';
 import { fetchAllBlogs, getUser } from './functions/api';
 import {
@@ -16,7 +17,6 @@ import {
     Switch,
     Route,
     Redirect,
-    useParams,
 } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
 import { BlogContext } from './context/BlogContext';
@@ -87,6 +87,11 @@ function App() {
                                 <Login />
                             </UserContext.Provider>
                         </Route>
+                        <Route path="/login/:name" exact>
+                            <UserContext.Provider value={{ user, setUser }}>
+                                <Login />
+                            </UserContext.Provider>
+                        </Route>
                         <Route path="/myblogs" exact>
                             <UserBlogsPreview />
                         </Route>
@@ -95,6 +100,9 @@ function App() {
                         </Route>
                         <Route path="/create">
                             <CreateBlog />
+                        </Route>
+                        <Route path="/signup">
+                            <SignUp />
                         </Route>
                     </Switch>
                 </BlogContext.Provider>

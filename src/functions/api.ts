@@ -45,6 +45,24 @@ export const loginUser = async (username: string, password: string) => {
     }
 };
 
+export const signUpUser = async (
+    email: string,
+    username: string,
+    password: string
+) => {
+    const res = await fetch(url + '/user/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, username }),
+    });
+
+    const json = await res.json();
+
+    return json;
+};
+
 export const getUser = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
