@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useContext } from 'react';
 import { IBlog } from '../../types';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../functions/customHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { deleteBlog } from '../../functions/api';
+import { BlogContext } from '../../context/BlogContext';
 interface Props {
     key?: number;
     blog: IBlog;
     editing?: boolean;
-    setBlogs?: React.Dispatch<React.SetStateAction<IBlog[] | null | undefined>>;
 }
 
 const padding = '15px';
@@ -64,7 +64,9 @@ const StyledInfo = styled.div`
     }
 `;
 
-const Content: React.FC<Props> = ({ editing, blog, setBlogs }) => {
+const Content: React.FC<Props> = ({ editing, blog }) => {
+    const { setBlogs } = useContext(BlogContext);
+
     return (
         <StyledBlogPreview style={editing ? { transform: 'none' } : {}}>
             <StyledHeader>{blog.title}</StyledHeader>
@@ -77,7 +79,6 @@ const Content: React.FC<Props> = ({ editing, blog, setBlogs }) => {
                                 if (setBlogs) {
                                     setBlogs((blogs) => {
                                         const temp = blogs?.filter((b) => {
-                                            console.log(b._id !== blog._id);
                                             return b._id !== blog._id;
                                         });
 
@@ -110,16 +111,12 @@ const Content: React.FC<Props> = ({ editing, blog, setBlogs }) => {
     }
 };
 
-export const BlogPreview: React.FC<Props> = ({ blog, editing, setBlogs }) => {
+export const BlogPreview: React.FC<Props> = ({ blog, editing }) => {
     return (
         <>
             {editing ? (
                 <div>
-                    <Content
-                        editing={editing}
-                        blog={blog}
-                        setBlogs={setBlogs}
-                    />
+                    <Content editing={editing} blog={blog} />
                 </div>
             ) : (
                 <Link

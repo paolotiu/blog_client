@@ -1,13 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { IBlog } from '../../types';
 import { BlogPreview } from './BlogPreview';
-
-interface Props {
-    blogs: IBlog[];
-    editing?: boolean;
-    setBlogs?: React.Dispatch<React.SetStateAction<IBlog[] | null | undefined>>;
-}
+import { BlogContext } from '../../context/BlogContext';
 const StyledBG = styled.div`
     position: fixed;
     z-index: -1;
@@ -27,22 +22,23 @@ const StyledContainer = styled.section`
     padding: 50px clamp(50px, 1vw, 200px);
 `;
 
-export const BlogPreviewsContainer: React.FC<Props> = ({
-    blogs,
-    editing,
-    setBlogs,
-}) => {
+interface Props {
+    editing?: boolean;
+    setBlogs?: React.Dispatch<React.SetStateAction<IBlog[] | null | undefined>>;
+}
+
+export const BlogPreviewsContainer: React.FC<Props> = ({ editing }) => {
+    const { blogs } = useContext(BlogContext);
     return (
         <>
             <StyledContainer>
-                {blogs.map((blog, index) => {
+                {blogs?.map((blog, index) => {
                     if (editing) {
                         return (
                             <BlogPreview
                                 key={index}
                                 blog={blog}
                                 editing={editing}
-                                setBlogs={setBlogs}
                             />
                         );
                     }

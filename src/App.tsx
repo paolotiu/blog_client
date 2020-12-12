@@ -18,7 +18,7 @@ import {
     useParams,
 } from 'react-router-dom';
 import { UserContext } from './context/UserContext';
-
+import { BlogContext } from './context/BlogContext';
 import { ThemeProvider } from 'styled-components';
 const theme = {
     headline: '#272343',
@@ -62,39 +62,38 @@ function App() {
     return (
         <Router>
             <ThemeProvider theme={theme}>
-                <UserContext.Provider value={{ user, setUser }}>
-                    <Header />
-                </UserContext.Provider>
-                <Switch>
-                    <Route path="/" exact>
-                        <Redirect to="/blogs" />
-                    </Route>
+                <BlogContext.Provider value={{ setBlogs, blogs }}>
+                    <UserContext.Provider value={{ user, setUser }}>
+                        <Header />
+                    </UserContext.Provider>
+                    <Switch>
+                        <Route path="/" exact>
+                            <Redirect to="/blogs" />
+                        </Route>
 
-                    <Route path="/blogs" exact>
-                        {blogs ? (
-                            <BlogPreviewsContainer
-                                blogs={blogs}
-                                setBlogs={setBlogs}
-                            />
-                        ) : (
-                            <Spinner />
-                        )}
-                    </Route>
-                    <Route path="/blogs/:id" exact>
-                        <Blog />
-                    </Route>
-                    <Route path="/login" exact>
-                        <UserContext.Provider value={{ user, setUser }}>
-                            <Login />
-                        </UserContext.Provider>
-                    </Route>
-                    <Route path="/myblogs" exact>
-                        <UserBlogsPreview />
-                    </Route>
-                    <Route path="/edit/:id" exact>
-                        <EditBlog user={user} blogs={blogs} />
-                    </Route>
-                </Switch>
+                        <Route path="/blogs" exact>
+                            {blogs ? (
+                                <BlogPreviewsContainer />
+                            ) : (
+                                <Spinner message="Fetching data..." />
+                            )}
+                        </Route>
+                        <Route path="/blogs/:id" exact>
+                            <Blog />
+                        </Route>
+                        <Route path="/login" exact>
+                            <UserContext.Provider value={{ user, setUser }}>
+                                <Login />
+                            </UserContext.Provider>
+                        </Route>
+                        <Route path="/myblogs" exact>
+                            <UserBlogsPreview />
+                        </Route>
+                        <Route path="/edit/:id" exact>
+                            <EditBlog user={user} blogs={blogs} />
+                        </Route>
+                    </Switch>
+                </BlogContext.Provider>
             </ThemeProvider>
         </Router>
     );
