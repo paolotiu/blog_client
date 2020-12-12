@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../../../context/UserContext';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 const StyledDropwdown = styled.div`
     justify-self: end;
     position: relative;

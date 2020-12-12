@@ -17,7 +17,7 @@ export const CreateBlog = () => {
                 history.push('/blogs');
             }
         });
-    }, []);
+    }, [history]);
     return (
         <form action="" onSubmit={handleSubmit}>
             <input
