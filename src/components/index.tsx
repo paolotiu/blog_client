@@ -5,6 +5,7 @@ import { Blog } from './Blog/Blog';
 import { Login } from './Login/Login';
 import { UserBlogsPreview } from './UserBlogs/UserBlogsPreview';
 import { EditBlog } from './EditBlog/EditBlog';
+import { CreateBlog } from './CreateBlog/CreateBlog';
 export {
     UserBlogsPreview,
     BlogPreviewsContainer,
@@ -13,4 +14,5 @@ export {
     Blog,
     Login,
     EditBlog,
+    CreateBlog,
 };

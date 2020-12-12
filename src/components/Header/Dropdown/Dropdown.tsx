@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../../../context/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 const StyledDropwdown = styled.div`
     justify-self: end;
     position: relative;
@@ -86,6 +86,7 @@ interface Props {
 export const Dropdown: React.FC<Props> = ({ username }) => {
     const options = useRef<HTMLDivElement>(null);
     const { setUser } = useContext(UserContext);
+    const history = useHistory();
     function toggleDropdown(
         e:
             | React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -121,8 +122,22 @@ export const Dropdown: React.FC<Props> = ({ username }) => {
             <button onClick={toggleDropdown}>{username}</button>
             <div className="options" ref={options}>
                 <ul>
-                    <li id="option-1" onClick={toggleDropdown}>
-                        <Link to="/myblogs">Your Blogs</Link>
+                    <li
+                        id="option-1"
+                        onClick={(e) => {
+                            toggleDropdown(e);
+                            history.push('/myblogs');
+                        }}
+                    >
+                        <span>Your Blogs</span>
+                    </li>
+                    <li
+                        onClick={(e) => {
+                            toggleDropdown(e);
+                            history.push('/create');
+                        }}
+                    >
+                        <span>New Blog</span>
                     </li>
                     <li id="option-2" onClick={logOut}>
                         Log Out

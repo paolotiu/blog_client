@@ -115,17 +115,20 @@ export const deleteBlog = async (id: string) => {
     return json;
 };
 
-export const createblog = async (title: string, text: string) => {
+export const createBlog = async (title: string, text: string) => {
     const token = localStorage.getItem('token');
     if (!token) {
         return { error: 'No token' };
     }
 
-    const res = await fetch(url + '/blogs/', {
+    const res = await fetch(url + '/blogs', {
         method: 'POST',
         headers: {
             Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
         },
+
+        body: JSON.stringify({ title, text }),
     });
 
     const json = await res.json();

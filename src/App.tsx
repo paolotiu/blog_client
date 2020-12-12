@@ -8,6 +8,7 @@ import {
     Login,
     UserBlogsPreview,
     EditBlog,
+    CreateBlog,
 } from './components/index';
 import { fetchAllBlogs, getUser } from './functions/api';
 import {
@@ -91,6 +92,9 @@ function App() {
                         </Route>
                         <Route path="/edit/:id" exact>
                             <EditBlog user={user} blogs={blogs} />
+                        </Route>
+                        <Route path="/create">
+                            <CreateBlog />
                         </Route>
                     </Switch>
                 </BlogContext.Provider>
