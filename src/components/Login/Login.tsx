@@ -6,6 +6,7 @@ import {
     StyledCommentForm,
     StyledInputContainer,
 } from '../Blog/CommentForm/CommentForm';
+import { useHistory } from 'react-router-dom';
 const StyledForm = styled(StyledCommentForm)`
     margin: 0 auto;
     margin-top: 4em;
@@ -42,6 +43,7 @@ export const Login: React.FC = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { setUser } = useContext(UserContext);
+    const history = useHistory();
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         if (e.target.name === 'username') {
             setUsername(e.target.value);
@@ -58,6 +60,7 @@ export const Login: React.FC = () => {
             setError('You must input a username and password');
             return;
         } else {
+            //FE Validation Pased
             loginUser(username, password)
                 .then(
                     (res: {
@@ -68,6 +71,7 @@ export const Login: React.FC = () => {
                         if (res.error) {
                             setError(res.error);
                         } else {
+                            //Success
                             if (setUser) {
                                 console.log(res.user);
                                 setUser({
@@ -75,9 +79,11 @@ export const Login: React.FC = () => {
                                     isLogged: true,
                                 });
                             }
+
                             localStorage.setItem('token', res.token);
                             setUsername('');
                             setPassword('');
+                            history.push('/blogs');
                         }
                     }
                 )

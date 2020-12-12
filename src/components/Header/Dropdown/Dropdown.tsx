@@ -109,6 +109,7 @@ export const Dropdown: React.FC<Props> = ({ username }) => {
 
     function logOut() {
         localStorage.removeItem('token');
+        history.push('/blogs');
         if (setUser) {
             setUser({
                 username: '',

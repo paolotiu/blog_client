@@ -4,6 +4,7 @@ import { IBlog } from '../../types';
 import { Spinner } from '../index';
 import { BlogPreviewsContainer } from '../BlogPreviews/BlogPreviewsContainer';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const StyledHeader = styled.h1`
     text-align: center;
@@ -13,9 +14,11 @@ const StyledHeader = styled.h1`
 
 export const UserBlogsPreview: React.FC = () => {
     const [blogs, setBlogs] = useState<IBlog[] | null>();
+    const history = useHistory();
     useEffect(() => {
         getOwnBlogs().then((blogs) => {
             if (blogs.error) {
+                history.push('/blogs');
                 return;
             }
             setBlogs(blogs);
