@@ -16,7 +16,6 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
     const [blog, setBlog] = useState<IBlog>();
     const [saving, setSaving] = useState(false);
     useEffect(() => {
-        console.log('HEY');
         if (blogs) {
             const blog = blogs.find((blog) => {
                 if (blog._id === id) {
@@ -27,14 +26,12 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
             });
 
             // Check if author and user are the same
-            console.log(blog);
             if (blog?.author.username === user.username) {
                 setBlog(blog);
                 setText(blog.text);
                 setTitle(blog.title);
                 return;
             } else {
-                console.log('jjj');
                 setIsAuthor(false);
             }
         } else {
