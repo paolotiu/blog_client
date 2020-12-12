@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { IBlog, IUser } from '../../types';
 import { updateBlog } from '../../functions/api';
+import { Spinner } from '../Spinner/Spinner';
 interface Props {
     user: IUser;
     blogs: IBlog[] | null | undefined;
@@ -10,9 +11,10 @@ interface Props {
 
 export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
     const { id } = useParams<{ id: string }>();
-
+    const history = useHistory();
     const [isAuthor, setIsAuthor] = useState(true);
     const [blog, setBlog] = useState<IBlog>();
+    const [saving, setSaving] = useState(false);
     useEffect(() => {
         console.log('HEY');
         if (blogs) {
@@ -74,6 +76,12 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
                         />
                         <button type="submit">Save</button>
                     </form>
+                    <Spinner
+                        message="Saving..."
+                        isModal={true}
+                        marginTop="300px"
+                        isOpen={saving}
+                    />
                 </>
             ) : (
                 <Redirect to="/myblogs" />
@@ -91,7 +99,10 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
 
     function handleSubmit(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
         e.preventDefault();
-
-        updateBlog(id, title, text).then((res) => {});
+        setSaving(true);
+        updateBlog(id, title, text).then((res) => {
+            history.push('/blogs/' + id);
+            setSaving(false);
+        });
     }
 };
