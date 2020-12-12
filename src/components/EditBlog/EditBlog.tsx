@@ -5,7 +5,7 @@ import { IUser } from '../../types';
 import { updateBlog } from '../../functions/api';
 import { Spinner } from '../Spinner/Spinner';
 import { BlogContext } from '../../context/BlogContext';
-
+import { StyledInputContainer, StyledButton } from '../CreateBlog/CreateBlog';
 interface Props {
     user: IUser;
 }
@@ -45,13 +45,20 @@ export const EditBlog: React.FC<Props> = ({ user }) => {
         <>
             {isAuthor ? (
                 <>
-                    <form action="" onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            name="title"
-                            value={title}
-                            onChange={handleChange}
-                        />
+                    <form
+                        action=""
+                        onSubmit={handleSubmit}
+                        style={{ textAlign: 'center' }}
+                    >
+                        <StyledInputContainer>
+                            <label htmlFor="title"> Title: </label>
+                            <input
+                                type="text"
+                                name="title"
+                                value={title}
+                                onChange={handleChange}
+                            />
+                        </StyledInputContainer>
                         <Editor
                             apiKey="1eyhnd1ai3lt42bnqpcwia7y7lnlygy2395s0azirzbom22o"
                             initialValue={text}
@@ -71,7 +78,7 @@ export const EditBlog: React.FC<Props> = ({ user }) => {
                             outputFormat="text"
                             onChange={handleChange}
                         />
-                        <button type="submit">Save</button>
+                        <StyledButton type="submit">Save</StyledButton>
                     </form>
                     <Spinner
                         message="Saving..."
