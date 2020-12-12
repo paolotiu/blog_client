@@ -7,6 +7,7 @@ import { Spinner } from '../Spinner/Spinner';
 import { CommentForm } from './CommentForm/CommentForm';
 import { Comment } from './Comment/Comment';
 import styled from 'styled-components';
+import ReactHtmlParser from 'react-html-parser';
 const Container = styled.section`
     background-color: white;
     padding: 1em;
@@ -20,7 +21,7 @@ const Title = styled.h1`
     font-size: 2em;
     margin: 0;
 `;
-const Text = styled.p`
+const Text = styled.div`
     color: ${(props) => props.theme.paragraph};
     font-weight: 300;
     line-height: 1.5em;
@@ -56,7 +57,7 @@ export const Blog: React.FC = () => {
             {blog ? (
                 <Container>
                     <Title>{blog.title}</Title>
-                    <Text>{getText(blog.text)}</Text>
+                    <Text>{ReactHtmlParser(blog.text)}</Text>
                     <Info>
                         <span>By: {blog.author.username}</span>
                         <span>{formatDate(blog.timestamp)}</span>
@@ -80,10 +81,4 @@ export const Blog: React.FC = () => {
             )}
         </>
     );
-
-    function getText(html: string) {
-        var divContainer = document.createElement('div');
-        divContainer.innerHTML = html;
-        return divContainer.textContent || divContainer.innerText || '';
-    }
 };
