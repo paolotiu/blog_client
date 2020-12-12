@@ -11,6 +11,9 @@ interface Props {
     key?: number;
     blog: IBlog;
     editing?: boolean;
+    setOwnBlogs?: React.Dispatch<
+        React.SetStateAction<IBlog[] | null | undefined>
+    >;
 }
 
 const padding = '15px';
@@ -64,13 +67,13 @@ const StyledInfo = styled.div`
     }
 `;
 
-const Content: React.FC<Props> = ({ editing, blog }) => {
+const Content: React.FC<Props> = ({ editing, blog, setOwnBlogs }) => {
     const { setBlogs } = useContext(BlogContext);
 
     return (
         <StyledBlogPreview style={editing ? { transform: 'none' } : {}}>
             <StyledHeader>{blog.title}</StyledHeader>
-            <StyledPreview>{getPlainString(blog.text)}</StyledPreview>
+            <StyledPreview>{getText(blog.text)}</StyledPreview>
             <StyledInfo>
                 {editing ? (
                     <div className="blog-options">
@@ -78,6 +81,16 @@ const Content: React.FC<Props> = ({ editing, blog }) => {
                             onClick={() => {
                                 if (setBlogs) {
                                     setBlogs((blogs) => {
+                                        const temp = blogs?.filter((b) => {
+                                            return b._id !== blog._id;
+                                        });
+
+                                        return temp;
+                                    });
+                                }
+
+                                if (setOwnBlogs) {
+                                    setOwnBlogs((blogs) => {
                                         const temp = blogs?.filter((b) => {
                                             return b._id !== blog._id;
                                         });
@@ -102,21 +115,27 @@ const Content: React.FC<Props> = ({ editing, blog }) => {
             </StyledInfo>
         </StyledBlogPreview>
     );
-    function getPlainString(html: string | undefined) {
-        if (html) {
-            return html.replace(/<[^>]+>/g, '');
-        } else {
-            return '';
-        }
+    function getText(html: string) {
+        var divContainer = document.createElement('div');
+        divContainer.innerHTML = html;
+        return divContainer.textContent || divContainer.innerText || '';
     }
 };
 
-export const BlogPreview: React.FC<Props> = ({ blog, editing }) => {
+export const BlogPreview: React.FC<Props> = ({
+    blog,
+    editing,
+    setOwnBlogs,
+}) => {
     return (
         <>
             {editing ? (
                 <div>
-                    <Content editing={editing} blog={blog} />
+                    <Content
+                        editing={editing}
+                        blog={blog}
+                        setOwnBlogs={setOwnBlogs}
+                    />
                 </div>
             ) : (
                 <Link

@@ -26,11 +26,15 @@ interface Props {
     editing?: boolean;
     setBlogs?: React.Dispatch<React.SetStateAction<IBlog[] | null | undefined>>;
     ownBlogs?: IBlog[];
+    setOwnBlogs?: React.Dispatch<
+        React.SetStateAction<IBlog[] | null | undefined>
+    >;
 }
 
 export const BlogPreviewsContainer: React.FC<Props> = ({
     editing,
     ownBlogs,
+    setOwnBlogs,
 }) => {
     const { blogs } = useContext(BlogContext);
     return (
@@ -44,6 +48,7 @@ export const BlogPreviewsContainer: React.FC<Props> = ({
                                       key={index}
                                       blog={blog}
                                       editing={editing}
+                                      setOwnBlogs={setOwnBlogs}
                                   />
                               );
                           }

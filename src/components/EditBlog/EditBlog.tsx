@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
-import { IBlog, IUser } from '../../types';
+import { IUser } from '../../types';
 import { updateBlog } from '../../functions/api';
 import { Spinner } from '../Spinner/Spinner';
+import { BlogContext } from '../../context/BlogContext';
+
 interface Props {
     user: IUser;
-    blogs: IBlog[] | null | undefined;
 }
 
-export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
+export const EditBlog: React.FC<Props> = ({ user }) => {
     const { id } = useParams<{ id: string }>();
     const history = useHistory();
     const [isAuthor, setIsAuthor] = useState(true);
-    const [blog, setBlog] = useState<IBlog>();
+    const { blogs, setBlogs } = useContext(BlogContext);
     const [saving, setSaving] = useState(false);
     useEffect(() => {
         if (blogs) {
@@ -27,7 +28,6 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
 
             // Check if author and user are the same
             if (blog?.author.username === user.username) {
-                setBlog(blog);
                 setText(blog.text);
                 setTitle(blog.title);
                 return;
@@ -37,10 +37,10 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
         } else {
             setIsAuthor(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [blogs, id, user.username]);
     const [text, setText] = useState('');
     const [title, setTitle] = useState('');
+
     return (
         <>
             {isAuthor ? (
@@ -97,9 +97,26 @@ export const EditBlog: React.FC<Props> = ({ user, blogs }) => {
     function handleSubmit(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
         e.preventDefault();
         setSaving(true);
+
         updateBlog(id, title, text).then((res) => {
-            history.push('/blogs/' + id);
             setSaving(false);
+            if (setBlogs) {
+                setBlogs((blogs) => {
+                    if (blogs) {
+                        const temp = [...blogs];
+                        const index = temp.findIndex((b) => {
+                            return b._id === id;
+                        });
+
+                        temp[index].text = text;
+                        temp[index].title = title;
+                        return temp;
+                    } else {
+                        return blogs;
+                    }
+                });
+            }
+            history.push('/blogs/' + id);
         });
     }
 };

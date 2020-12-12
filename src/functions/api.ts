@@ -111,7 +111,6 @@ export const updateBlog = async (id: string, title: string, text: string) => {
     });
 
     const json = await res.json();
-
     return json;
 };
 

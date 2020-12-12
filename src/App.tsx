@@ -96,7 +96,7 @@ function App() {
                             <UserBlogsPreview />
                         </Route>
                         <Route path="/edit/:id" exact>
-                            <EditBlog user={user} blogs={blogs} />
+                            <EditBlog user={user} />
                         </Route>
                         <Route path="/create">
                             <CreateBlog />
