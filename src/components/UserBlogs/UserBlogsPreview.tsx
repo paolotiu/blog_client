@@ -10,6 +10,7 @@ const StyledHeader = styled.h1`
     margin-top: 50px;
     color: ${(props) => props.theme.headline};
 `;
+
 export const UserBlogsPreview: React.FC = () => {
     const [blogs, setBlogs] = useState<IBlog[] | null>();
     useEffect(() => {
@@ -20,6 +21,7 @@ export const UserBlogsPreview: React.FC = () => {
             setBlogs(blogs);
         });
     }, []);
+
     return (
         <>
             <StyledHeader style={{ textAlign: 'center' }}>
@@ -27,10 +29,10 @@ export const UserBlogsPreview: React.FC = () => {
             </StyledHeader>
             {blogs ? (
                 <>
-                    <BlogPreviewsContainer blogs={blogs} editing={true} />
+                    <BlogPreviewsContainer editing={true} />
                 </>
             ) : (
-                <Spinner />
+                <Spinner message="This may take a few seconds" />
             )}
         </>
     );
