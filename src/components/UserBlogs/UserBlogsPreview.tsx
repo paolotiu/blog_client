@@ -23,6 +23,7 @@ export const UserBlogsPreview: React.FC = () => {
             }
             setBlogs(blogs);
         });
+        return () => {};
     }, [history]);
 
     return (
@@ -32,7 +33,11 @@ export const UserBlogsPreview: React.FC = () => {
             </StyledHeader>
             {blogs ? (
                 <>
-                    <BlogPreviewsContainer editing={true} ownBlogs={blogs} />
+                    <BlogPreviewsContainer
+                        editing={true}
+                        ownBlogs={blogs}
+                        setOwnBlogs={setBlogs}
+                    />
                 </>
             ) : (
                 <Spinner message="This may take a few seconds" />
