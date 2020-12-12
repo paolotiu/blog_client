@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { createBlog } from '../../functions/api';
+import { createBlog, getUser } from '../../functions/api';
 import { useHistory } from 'react-router-dom';
 import { BlogContext } from '../../context/BlogContext';
 
@@ -9,6 +9,15 @@ export const CreateBlog = () => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const history = useHistory();
+
+    useEffect(() => {
+        //Check if user is logged in
+        getUser().then((res) => {
+            if (res.error) {
+                history.push('/blogs');
+            }
+        });
+    }, []);
     return (
         <form action="" onSubmit={handleSubmit}>
             <input
@@ -51,6 +60,9 @@ export const CreateBlog = () => {
     function handleSubmit(e: React.MouseEvent<HTMLFormElement, MouseEvent>) {
         e.preventDefault();
         createBlog(title, text).then((res) => {
+            if (res.error) {
+                return;
+            }
             if (setBlogs) {
                 setBlogs((blogs) => {
                     if (blogs) {
